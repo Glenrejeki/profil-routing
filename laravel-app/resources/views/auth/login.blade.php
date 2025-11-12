@@ -17,32 +17,49 @@
         .small-link a { color:#f53003; text-decoration:none; }
         .top-link { text-align:right; margin-bottom:10px; font-size:12px; }
         .top-link a { color:#444; text-decoration:none; }
+        .alert { background:#fff7ed; color:#7c2d12; padding:10px 12px; border-radius:8px; font-size:13px; margin-bottom:12px; border:1px solid #fed7aa;}
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="top-link">
-            <a href="{{ url('/') }}">← kembali</a>
-        </div>
-
-        <div class="title">Masuk</div>
-        <div class="sub">Silakan login untuk masuk ke dashboard.</div>
-
-        <form method="POST" action="{{ route('login.post') }}">
-            @csrf
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" required placeholder="contoh: mahasiswa@itdel.ac.id">
-
-            <label for="password">Password</label>
-            <input id="password" type="password" name="password" required placeholder="••••••••">
-
-            <button type="submit">Login</button>
-        </form>
-
-        <div class="small-link">
-            Belum punya akun?
-            <a href="{{ route('register') }}">Daftar sekarang</a>
-        </div>
+<div class="card">
+    <div class="top-link">
+        <a href="{{ route('home') }}">← kembali</a>
     </div>
+
+    <div class="title">Masuk</div>
+    <div class="sub">Silakan login untuk melihat profil.</div>
+
+    @if ($errors->any())
+        <div class="alert">
+            @foreach ($errors->all() as $e)
+                <div>{{ $e }}</div>
+            @endforeach
+        </div>
+    @endif
+
+    @if (session('warning'))
+        <div class="alert">{{ session('warning') }}</div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0">{{ session('success') }}</div>
+    @endif
+
+    <form method="POST" action="{{ route('login.post') }}">
+        @csrf
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" required placeholder="contoh: mahasiswa@itdel.ac.id" value="{{ old('email') }}">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required placeholder="••••••••">
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="small-link">
+        Belum punya akun?
+        <a href="{{ route('register') }}">Daftar sekarang</a>
+    </div>
+</div>
 </body>
 </html>
